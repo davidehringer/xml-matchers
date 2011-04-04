@@ -8,7 +8,14 @@
 	<packaging>jar</packaging>
 
 	<name>xml-matchers</name>
-	<url>http://xmlmatchers.org</url>
+	<url>http://code.google.com/p/xml-matchers/</url>
+
+	<inceptionYear>2010</inceptionYear>
+	<developers>
+		<developer>
+			<name>David Ehringer</name>
+		</developer>
+	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -96,12 +103,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<inceptionYear>2010</inceptionYear>
-	<developers>
-		<developer>
-			<id>dehringer</id>
-			<name>David Ehringer</name>
-		</developer>
-	</developers>
 </project>
