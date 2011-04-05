@@ -30,8 +30,9 @@ import org.xml.sax.SAXException;
 import org.xmlmatchers.transform.StringSource;
 
 /**
- * @author David Ehringer
+ * <em>This is still experimental</em>
  * 
+ * @author David Ehringer
  */
 public class SchemaFactory {
 
@@ -52,7 +53,7 @@ public class SchemaFactory {
 	public Schema from(URL url){
 		return null;
 	}
-	// TODO create a public constructor that allows passing inthe language and optionally an implementation class for the schemaFactory.
+	// TODO create a public constructor that allows passing in the language and optionally an implementation class for the schemaFactory.
 
 	public static Schema w3cXmlSchemaFromString(String schemaContents)
 			throws SAXException {
