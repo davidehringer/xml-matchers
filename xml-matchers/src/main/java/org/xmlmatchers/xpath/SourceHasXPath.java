@@ -16,7 +16,6 @@
 package org.xmlmatchers.xpath;
 
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
 import javax.xml.transform.Source;
 
 import org.hamcrest.Factory;
@@ -24,32 +23,33 @@ import org.hamcrest.Matcher;
 
 /**
  * @author David Ehringer
- *
+ * 
  */
 public class SourceHasXPath extends HasXPath<Source> {
 
 	// TODO change constructors back to <? super String>
-	
+
 	public SourceHasXPath(String xPathExpression) {
 		super(xPathExpression);
 	}
-	
-	public SourceHasXPath(String xPathExpression,
-			Matcher<?> valueMatcher,
+
+	public SourceHasXPath(String xPathExpression, Matcher<? super String> valueMatcher,
 			NamespaceContext namespaceContext) {
 		super(xPathExpression, valueMatcher, namespaceContext);
 	}
 
-	public SourceHasXPath(String xPathExpression, Matcher<?> valueMatcher,
-			NamespaceContext namespaceContext, QName xPathReturnType) {
-		super(xPathExpression, valueMatcher, namespaceContext, xPathReturnType);
+	public <T> SourceHasXPath(String xPathExpression,
+			Matcher<? super T> valueMatcher, NamespaceContext namespaceContext,
+			XpathReturnType<? super T> xpathReturnType) {
+		super(xPathExpression, valueMatcher, namespaceContext, xpathReturnType);
 	}
 
 	@Override
-	protected Source convertToSource(Source source) throws IllegalArgumentException {
+	protected Source convertToSource(Source source)
+			throws IllegalArgumentException {
 		return source;
 	}
-	
+
 	@Factory
 	public static Matcher<Source> hasXPath(String xPath) {
 		return new SourceHasXPath(xPath);
@@ -67,34 +67,32 @@ public class SourceHasXPath extends HasXPath<Source> {
 		return new SourceHasXPath(xPath, valueMatcher, null);
 	}
 
-	// TODO keep <?>
 	@Factory
-	public static Matcher<Source> hasXPath(QName xPathReturnType, String xPath,
-			Matcher<?> valueMatcher) {
-		return new SourceHasXPath(xPath, valueMatcher, null, xPathReturnType);
+	public static Matcher<Source> hasXPath(String xPath,
+			NamespaceContext namespaceContext, Matcher<? super String> valueMatcher) {
+		return new SourceHasXPath(xPath, valueMatcher, namespaceContext);
+	}
+
+	@Factory
+	public static <T> Matcher<Source> hasXPath(String xPath,
+			XpathReturnType<? super T> xpathReturnType,
+			Matcher<? super T> valueMatcher) {
+		return new SourceHasXPath(xPath, valueMatcher, null, xpathReturnType);
+	}
+
+	@Factory
+	public static <T> Matcher<Source> hasXPath(String xPath,
+			NamespaceContext namespaceContext,
+			XpathReturnType<? super T> xpathReturnType,
+			Matcher<? super T> valueMatcher) {
+		return new SourceHasXPath(xPath, valueMatcher, namespaceContext,
+				xpathReturnType);
 	}
 
 	@Factory
 	public static Matcher<Source> hasXPath(String xPath,
-			NamespaceContext namespaceContext,
-			Matcher<? super String> valueMatcher) {
+			Matcher<? super String> valueMatcher, NamespaceContext namespaceContext) {
 		return new SourceHasXPath(xPath, valueMatcher, namespaceContext);
 	}
 
-
-	// TODO keep <?>
-	@Factory
-	public static Matcher<Source> hasXPath(QName xPathReturnType, String xPath,
-			NamespaceContext namespaceContext,
-			Matcher<?> valueMatcher) {
-		return new SourceHasXPath(xPath, valueMatcher, namespaceContext, xPathReturnType);
-	}
-	
-	@Factory
-	public static Matcher<Source> hasXPath(String xPath,
-			Matcher<? super String> valueMatcher,
-			NamespaceContext namespaceContext) {
-		return new SourceHasXPath(xPath, valueMatcher, namespaceContext);
-	}
-	
 }
