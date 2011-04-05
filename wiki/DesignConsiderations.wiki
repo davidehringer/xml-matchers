@@ -1,5 +1,5 @@
 #summary Design Considerations
-#labels Phase-Design
+#labels Phase-Design,Featured
 
 = Guidelines =
 
