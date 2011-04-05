@@ -27,8 +27,6 @@ import org.hamcrest.Matcher;
  */
 public class SourceHasXPath extends HasXPath<Source> {
 
-	// TODO change constructors back to <? super String>
-
 	public SourceHasXPath(String xPathExpression) {
 		super(xPathExpression);
 	}
