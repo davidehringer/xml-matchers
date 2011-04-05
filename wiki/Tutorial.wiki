@@ -1,5 +1,5 @@
 #summary Quick Tutorial
-#labels Tutorial
+#labels Tutorial,Featured
 
 = Introduction =
 
