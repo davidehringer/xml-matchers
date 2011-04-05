@@ -27,8 +27,9 @@ import org.xmlmatchers.transform.StringSource;
  * @author David Ehringer
  */
 public class StringResultHasXPath extends HasXPath<StringResult> {
+	
 	public StringResultHasXPath(String xPathExpression,
-			Matcher<? super String> valueMatcher,
+			Matcher<String> valueMatcher,
 			NamespaceContext namespaceContext) {
 		super(xPathExpression, valueMatcher, namespaceContext);
 	}
@@ -55,13 +56,13 @@ public class StringResultHasXPath extends HasXPath<StringResult> {
 
 	@Factory
 	public static Matcher<StringResult> hasXPath(String xPath,
-			Matcher<? super String> valueMatcher) {
+			Matcher<String> valueMatcher) {
 		return new StringResultHasXPath(xPath, valueMatcher, null);
 	}
 
 	@Factory
 	public static Matcher<StringResult> hasXPath(String xPath,
-			Matcher<? super String> valueMatcher,
+			Matcher<String> valueMatcher,
 			NamespaceContext namespaceContext) {
 		return new StringResultHasXPath(xPath, valueMatcher, namespaceContext);
 	}

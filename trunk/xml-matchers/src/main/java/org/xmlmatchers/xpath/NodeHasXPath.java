@@ -28,7 +28,7 @@ import org.w3c.dom.Node;
 public class NodeHasXPath extends HasXPath<Node> {
 
 	public NodeHasXPath(String xPathExpression,
-			Matcher<? super String> valueMatcher,
+			Matcher<String> valueMatcher,
 			NamespaceContext namespaceContext) {
 		super(xPathExpression, valueMatcher, namespaceContext);
 	}

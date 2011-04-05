@@ -15,8 +15,9 @@
  */
 package org.xmlmatchers.xpath;
 
+import static org.xmlmatchers.xpath.XpathReturnType.returningAString;
+
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMResult;
@@ -45,23 +46,23 @@ public abstract class HasXPath<T> extends TypeSafeMatcher<T> {
 
 	private static final IdentityTransformer IDENTITY = new IdentityTransformer();
 
-	private final Matcher<?> valueMatcher;
 	private final String xPathString;
-	private final XPathExpression compiledXPath;
-	private final QName xPathReturnType;
+	private final XPathExpression compiledXPath;	
+	private final XpathReturnType<?>  xPathReturnType;
+
+	private final Matcher<?> valueMatcher;
 
 	protected HasXPath(String xPathExpression) {
 		this(xPathExpression, null, null);
 	}
 
-	// TODO not sure about being able to support Matcher<?> correctly
-	protected HasXPath(String xPathExpression, Matcher<?> valueMatcher,
+	protected HasXPath(String xPathExpression, Matcher<? super String> valueMatcher,
 			NamespaceContext namespaceContext) {
-		this(xPathExpression, valueMatcher, namespaceContext, null);
+		this(xPathExpression, valueMatcher, namespaceContext, returningAString());
 	}
-
-	public HasXPath(String xPathExpression, Matcher<?> valueMatcher,
-			NamespaceContext namespaceContext, QName xPathReturnType) {
+	
+	public <R> HasXPath(String xPathExpression, Matcher<? super R> valueMatcher,
+			NamespaceContext namespaceContext, XpathReturnType<? super R> xPathReturnType) {
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
 			if (namespaceContext != null) {
@@ -75,7 +76,7 @@ public abstract class HasXPath<T> extends TypeSafeMatcher<T> {
 					+ xPathExpression, e);
 		}
 		if (xPathReturnType == null) {
-			this.xPathReturnType = XPathConstants.STRING;
+			this.xPathReturnType = returningAString();
 		} else {
 			this.xPathReturnType = xPathReturnType;
 		}
@@ -125,8 +126,8 @@ public abstract class HasXPath<T> extends TypeSafeMatcher<T> {
 
 	private Object evaluateXPath(Node node) throws TransformerException,
 			XPathExpressionException {
-		// TODO nodeset and dom not supported
-		if (XPathConstants.NODE == xPathReturnType) {
+		if (XPathConstants.NODE == xPathReturnType.evaluationMode()) {
+			// We need a special case for XML results so that we actually get back the XML
 			Node result = (Node) compiledXPath.evaluate(node,
 					XPathConstants.NODE);
 			DOMSource domSource = new DOMSource(result);
@@ -134,7 +135,6 @@ public abstract class HasXPath<T> extends TypeSafeMatcher<T> {
 			IDENTITY.transform(domSource, stringResult);
 			return stringResult.toString();
 		}
-		return compiledXPath.evaluate(node, xPathReturnType);
-
+		return compiledXPath.evaluate(node, xPathReturnType.evaluationMode());
 	}
 }

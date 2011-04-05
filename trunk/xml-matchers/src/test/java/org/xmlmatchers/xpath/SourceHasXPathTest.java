@@ -15,22 +15,25 @@
  */
 package org.xmlmatchers.xpath;
 
-import static javax.xml.xpath.XPathConstants.BOOLEAN;
-import static javax.xml.xpath.XPathConstants.NODE;
-import static javax.xml.xpath.XPathConstants.NUMBER;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.xmlmatchers.equivalence.IsEquivalentTo.equivalentTo;
 import static org.xmlmatchers.transform.StringSource.toSource;
 import static org.xmlmatchers.xpath.SourceHasXPath.hasXPath;
+import static org.xmlmatchers.xpath.XpathReturnType.returningABoolean;
+import static org.xmlmatchers.xpath.XpathReturnType.returningANumber;
+import static org.xmlmatchers.xpath.XpathReturnType.returningAnXmlNode;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.transform.Source;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlmatchers.namespace.SimpleNamespaceContext;
 
@@ -40,101 +43,159 @@ import org.xmlmatchers.namespace.SimpleNamespaceContext;
  */
 public class SourceHasXPathTest {
 
-	// This is the XML from org.hamcrest.xml.HasXPathTest
 	private Source xml = toSource(""
-			+ "<root type='food'>\n"
-			+ "  <something id='a'><cheese>Edam</cheese></something>\n"
-			+ "  <something id='b'><cheese>Cheddar</cheese></something>\n"
-			+ "  <f:foreignSomething xmlns:f=\"http://cheese.com\" milk=\"camel\">Caravane</f:foreignSomething>\n"
-			+ "  <emptySomething />\n"
-			+ "  <f:emptySomething xmlns:f=\"http://cheese.com\" f:calories=\"0\" />"
-			+ "  <somethingElse calories=\"2\" good=\"false\" bad=\"0\" />"
-			+ "</root>\n");
+			+ "<mountains type='big'>\n"
+			+ "  <mountain id='a' altname=''><name>Everest</name></mountain>\n"
+			+ "  <mountain id='b'><name>K2</name></mountain>\n"
+			+ "  <f:range xmlns:f=\"http://mountains.com\" milk=\"camel\">Caravane</f:range>\n"
+			+ "  <oceanRidge />\n"
+			+ "  <f:oceanRidge xmlns:f=\"http://mountains.com\" f:depth='-5000' />"
+			+ "  <volcanoe eruptions='2' good='false' bad='0' />"
+			+ "</mountains>\n");
 
 	private NamespaceContext usingNamespaces = new SimpleNamespaceContext()
-			.withBinding("c", "http://cheese.com");
+			.withBinding("m", "http://mountains.com")//
+			.withBinding("r", "http://rivers.com");
 
 	@Test
 	public void matchesNodesInTheXmlWhenNoNamespacesAreBound() {
-		assertThat(xml, hasXPath("/root"));
-		assertThat(xml, hasXPath("/root/something"));
-		assertThat(xml, hasXPath("/root/something[2]/cheese"));
-		assertThat(xml, hasXPath("/root/emptySomething"));
-		assertThat(xml, not(hasXPath("/root/foreignSomething"))); // Move to its
-																	// own test
+		assertThat(xml, hasXPath("/mountains"));
+		assertThat(xml, hasXPath("/mountains/mountain"));
+		assertThat(xml, hasXPath("/mountains/mountain[2]/name"));
+		assertThat(xml, hasXPath("/mountains/oceanRidge"));
+		assertThat(xml, hasXPath("/mountains/mountain[@id='a']/@altname"));
 	}
 
 	@Test
-	public void matchesFunctions() {
-		assertThat(xml, hasXPath("count(/root/something)", equalTo("2")));
+	public void ifANodeIsPrefixedByANamespaceAndNamespacesAreNotBoundXpathWillNotFindIt() {
+		assertThat(xml, not(hasXPath("/mountains/range")));
+	}
+
+	@Test
+	public void functionsCanBeUsedToReturnDataThatCanBeMatchedAgainst() {
+		assertThat(xml, hasXPath("count(/mountains/mountain)", equalTo("2")));
+		assertThat(xml,//
+				hasXPath("count(/mountains/mountain)", //
+						returningANumber(), //
+						greaterThanOrEqualTo(2d)));
+		assertThat(xml,//
+				hasXPath("count(/mountains/mountain)", //
+						returningANumber(), //
+						not(lessThanOrEqualTo(1d))));
 	}
 
 	@Test
 	public void matchesNodesInTheXmlWhenNamespacesAreBound() {
-		assertThat(xml, hasXPath("/root", usingNamespaces));
-		assertThat(xml, hasXPath("/root/something", usingNamespaces));
-		assertThat(xml, hasXPath("/root/something[2]/cheese", usingNamespaces));
-		assertThat(xml, hasXPath("/root/emptySomething", usingNamespaces));
-		assertThat(xml, not(hasXPath("/root/foreignSomething")));
-		assertThat(xml, hasXPath("/root/c:foreignSomething", usingNamespaces));
+		assertThat(xml, hasXPath("/mountains", usingNamespaces));
+		assertThat(xml, hasXPath("/mountains/mountain", usingNamespaces));
+		assertThat(xml,
+				hasXPath("/mountains/mountain[2]/name", usingNamespaces));
+		assertThat(xml, hasXPath("/mountains/oceanRidge", usingNamespaces));
+		assertThat(xml, not(hasXPath("/mountains/range")));
+		assertThat(xml, hasXPath("/mountains/m:range", usingNamespaces));
 	}
 
 	@Test
 	public void matchesAttributesInTheXmlWhenNoNamespacesAreBound() {
-		assertThat(xml, hasXPath("/root/@type"));
+		assertThat(xml, hasXPath("/mountains/@type"));
 	}
 
 	@Test
 	public void matchesAttributesInTheXmlWhenNamespacesAreBound() {
 		assertThat(xml,
-				hasXPath("/root/c:emptySomething/@c:calories", usingNamespaces));
+				hasXPath("/mountains/m:oceanRidge/@m:depth", usingNamespaces));
 	}
 
 	@Test
 	public void theResultOfTheXpathCanMatchedUsingEquivalentToWhenTheResultIsAnXmlFragment() {
 		assertThat(
 				xml,
-				hasXPath(NODE, "/root/something[@id='a']/cheese",
-						equivalentTo("<cheese>Edam</cheese>")));
-	}
-
-	@Test
-	public void theResultOfTheXpathCanMatchedUsingEquivalentToWhenTheResultIsAString() {
-		assertThat(
-				xml,
-				hasXPath("/root/c:emptySomething/@c:calories", usingNamespaces,
-						equalTo("0")));
-	}
-
-	@Test
-	public void theResultOfTheXpathCanMatchedUsingEquivalentToWhenTheResultIsANumber() {
-		assertThat(xml,
-				hasXPath(NUMBER, "/root/somethingElse/@calories", equalTo(2.0)));
-		assertThat(
-				xml,
-				hasXPath(NUMBER, "/root/somethingElse/@calories", closeTo(4, 2)));
-	}
-
-	@Test
-	@Ignore("not sure if this is a good idea")
-	public void theResultOfTheXpathCanMatchedUsingEquivalentToWhenTheResultIsABoolean() {
-		assertThat(xml,
-				hasXPath(BOOLEAN, "/root/somethingElse/@good", equalTo(false)));
-	}
-
-	@Test
-	public void theResultOfTheXpathCanMatchedUsingStringContains() {
-		assertThat(
-				xml,
-				hasXPath("/root/something[@id='a']/cheese",
-						containsString("Edam")));
+				hasXPath("/mountains/mountain[@id='a']/name",
+						returningAnXmlNode(),
+						equivalentTo("<name>Everest</name>")));
 	}
 
 	@Test
 	public void matchingNodesCanBeTestedForEquivalence() {
 		assertThat(
 				xml,
-				hasXPath(NODE, "/root/something[@id='a']/cheese",
-						equivalentTo("<cheese><!-- some comment -->Edam</cheese>")));
+				hasXPath(
+						"/mountains/mountain[@id='a']/name",
+						returningAnXmlNode(),
+						equivalentTo("<name><!-- some comment -->Everest</name>")));
+	}
+
+	@Test
+	public void theResultOfTheXpathCanMatchedUsingEquivalentToWhenTheResultIsAString() {
+		assertThat(
+				xml,
+				hasXPath("/mountains/m:oceanRidge/@m:depth", usingNamespaces,
+						equalTo("-5000")));
+		assertThat(xml,
+				hasXPath("/mountains/mountain[@id='a']/@altname", equalTo("")));
+		assertThat(
+				xml,
+				hasXPath("/mountains/mountain[@id='a']/name",
+						equalToIgnoringCase("EVEREST")));
+		assertThat(
+				xml,
+				hasXPath("/mountains/mountain[@id='a']/name/text()",
+						equalToIgnoringCase("EvErEsT")));
+	}
+
+	@Test
+	public void theResultOfTheXpathCanMatchedUsingEquivalentToWhenTheResultIsANumber() {
+		assertThat(
+				xml,
+				hasXPath("/mountains/volcanoe/@eruptions", returningANumber(),
+						equalTo(2.0)));
+		assertThat(
+				xml,
+				hasXPath("/mountains/volcanoe/@eruptions", returningANumber(),
+						closeTo(4, 2)));
+		assertThat(
+				xml,
+				hasXPath("/mountains/volcanoe/@eruptions", returningANumber(),
+						lessThan(5d)));
+		assertThat(
+				xml,
+				hasXPath("/mountains/volcanoe/@eruptions", returningANumber(),
+						lessThanOrEqualTo(5.0)));
+		assertThat(
+				xml,
+				hasXPath("count(/mountains/mountain)", returningANumber(),
+						equalTo(2d)));
+	}
+
+	@Test
+	public void attributeOrNodeValuesCannotBeConvertedToBooleans() {
+		assertThat(xml, //
+				not(hasXPath("/mountains/volcanoe/@good", //
+						returningABoolean(),//
+						equalTo(false))));
+	}
+
+	@Test
+	public void theResultOfTheXpathCanMatchedUsingEquivalentToWhenTheResultIsABoolean() {
+		assertThat(xml,//
+				hasXPath("/mountains/volcanoe/@good", //
+						returningABoolean(),//
+						equalTo(true)));
+		assertThat(xml,//
+				hasXPath("not(/mountains/climber)", //
+						returningABoolean(),//
+						equalTo(true)));
+		assertThat(xml,//
+				hasXPath("not(/mountains/volcanoe/@good)", //
+						returningABoolean(),//
+						equalTo(false)));
+	}
+
+	@Test
+	public void theResultOfTheXpathCanMatchedUsingStringContains() {
+		assertThat(
+				xml,
+				hasXPath("/mountains/mountain[@id='a']/name",
+						containsString("Everest")));
 	}
 }

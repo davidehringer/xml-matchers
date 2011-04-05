@@ -50,20 +50,20 @@ public class XmlMatchers {
 				namespaceContext);
 	}
 
-	public static org.hamcrest.Matcher<org.xmlmatchers.transform.StringResult> resultHasXPath(
-			java.lang.String xPath,
-			org.hamcrest.Matcher<? super java.lang.String> valueMatcher) {
-		return org.xmlmatchers.xpath.StringResultHasXPath.hasXPath(xPath,
-				valueMatcher);
-	}
+//	public static org.hamcrest.Matcher<org.xmlmatchers.transform.StringResult> resultHasXPath(
+//			java.lang.String xPath,
+//			org.hamcrest.Matcher<? super java.lang.String> valueMatcher) {
+//		return org.xmlmatchers.xpath.StringResultHasXPath.hasXPath(xPath,
+//				valueMatcher);
+//	}
 
-	public static org.hamcrest.Matcher<org.xmlmatchers.transform.StringResult> resultHasXPath(
-			java.lang.String xPath,
-			org.hamcrest.Matcher<? super java.lang.String> valueMatcher,
-			javax.xml.namespace.NamespaceContext namespaceContext) {
-		return org.xmlmatchers.xpath.StringResultHasXPath.hasXPath(xPath,
-				valueMatcher, namespaceContext);
-	}
+//	public static org.hamcrest.Matcher<org.xmlmatchers.transform.StringResult> resultHasXPath(
+//			java.lang.String xPath,
+//			org.hamcrest.Matcher<? super java.lang.String> valueMatcher,
+//			javax.xml.namespace.NamespaceContext namespaceContext) {
+//		return org.xmlmatchers.xpath.StringResultHasXPath.hasXPath(xPath,
+//				valueMatcher, namespaceContext);
+//	}
 
 	public static org.hamcrest.Matcher<org.xmlmatchers.transform.StringResult> resultHasXPath(
 			java.lang.String xPath) {
@@ -77,20 +77,20 @@ public class XmlMatchers {
 				namespaceContext);
 	}
 
-	public static org.hamcrest.Matcher<java.lang.String> stringHasXPath(
-			java.lang.String xPath,
-			org.hamcrest.Matcher<? super java.lang.String> valueMatcher) {
-		return org.xmlmatchers.xpath.StringHasXPath.hasXPath(xPath,
-				valueMatcher);
-	}
+//	public static org.hamcrest.Matcher<java.lang.String> stringHasXPath(
+//			java.lang.String xPath,
+//			org.hamcrest.Matcher<? super java.lang.String> valueMatcher) {
+//		return org.xmlmatchers.xpath.StringHasXPath.hasXPath(xPath,
+//				valueMatcher);
+//	}
 
-	public static org.hamcrest.Matcher<java.lang.String> stringHasXPath(
-			java.lang.String xPath,
-			org.hamcrest.Matcher<? super java.lang.String> valueMatcher,
-			javax.xml.namespace.NamespaceContext namespaceContext) {
-		return org.xmlmatchers.xpath.StringHasXPath.hasXPath(xPath,
-				valueMatcher, namespaceContext);
-	}
+//	public static org.hamcrest.Matcher<java.lang.String> stringHasXPath(
+//			java.lang.String xPath,
+//			org.hamcrest.Matcher<? super java.lang.String> valueMatcher,
+//			javax.xml.namespace.NamespaceContext namespaceContext) {
+//		return org.xmlmatchers.xpath.StringHasXPath.hasXPath(xPath,
+//				valueMatcher, namespaceContext);
+//	}
 
 	public static org.hamcrest.Matcher<java.lang.String> stringHasXPath(
 			java.lang.String xPath) {
@@ -153,4 +153,5 @@ public class XmlMatchers {
 		return org.xmlmatchers.validation.NodeConformsToSchema
 				.conformsTo(schema);
 	}
+
 }
