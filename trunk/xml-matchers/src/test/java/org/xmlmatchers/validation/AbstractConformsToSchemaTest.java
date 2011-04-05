@@ -45,7 +45,7 @@ public abstract class AbstractConformsToSchemaTest {
 		return Arrays
 				.asList(new Schema[][] {
 						{ w3cXmlSchemaFromClasspath("org/xmlmatchers/validation/example.xsd") },//
-						{ relaxNGSchemaFromClasspath("org/xmlmatchers/validation/example.rng") },//
+//						{ relaxNGSchemaFromClasspath("org/xmlmatchers/validation/example.rng") },//
 //						{ relaxNGSchemaFromClasspath("org/xmlmatchers/validation/example.rnc") } //
 				});
 	}
