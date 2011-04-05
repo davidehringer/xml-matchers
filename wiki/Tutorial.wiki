@@ -24,6 +24,7 @@ The XPath matchers support:
   * Multiple return types for XPath expressions
 
 *XML Formats Supported*
+
 For any of the examples, the `xml` could be one of the following types.
 {{{
 import org.xmlmatchers.transform.StringResult
@@ -180,6 +181,7 @@ assertThat(xml, conformsTo(schema));
 }}}
 
 *RelaxNG*
+
 Support for XML and compact schema formats is very experimental at this point.
 
 = Usage with JUnit =
