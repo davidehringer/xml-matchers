@@ -4,7 +4,7 @@
 
 	<groupId>org.xmlmatchers</groupId>
 	<artifactId>xml-matchers</artifactId>
-	<version>0.8-SNAPSHOT</version>
+	<version>0.8</version>
 	<packaging>jar</packaging>
 
 	<name>xml-matchers</name>
