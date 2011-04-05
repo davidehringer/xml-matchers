@@ -32,6 +32,10 @@ assertThat(xml, hasXPath("/mountains/mountain[@id='a']/@altname"));
 
 *Basic Matching using Namespaces*
 {{{
+import org.xmlmatchers.namespace.SimpleNamespaceContext;
+
+...
+
 NamespaceContext usingNamespaces = new SimpleNamespaceContext()
 			.withBinding("m", "http://mountains.com");
 assertThat(xml, hasXPath("/mountains/m:range", usingNamespaces));
