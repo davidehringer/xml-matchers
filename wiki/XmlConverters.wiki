@@ -2,7 +2,7 @@
 
 = Converters =
 
-The [http://code.google.com/p/xml-matchers/source/browse/trunk/xml-matchers/src/main/java/org/xmlmatchers/transform/XmlConverters.java XmlConverters] class has a set of "`the`" methods that will convert XML in various formats into a Source, the standard format for the Matchers. The following formats are supported:
+The [http://code.google.com/p/xml-matchers/source/browse/trunk/xml-matchers/src/main/java/org/xmlmatchers/transform/XmlConverters.java XmlConverters] class has a set of "`the`" methods that will convert XML in various formats into a Source object, the standard format fused by all the matchers. The following formats are supported:
   * org.w3c.dom.Node
   * javax.xml.transform.Source (as a pure "sugar" identity conversion)
   * javax.xml.transform.Result
