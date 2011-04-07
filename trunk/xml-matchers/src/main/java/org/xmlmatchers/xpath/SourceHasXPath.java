@@ -36,9 +36,13 @@ public class SourceHasXPath extends HasXPath<Source> {
 		super(xPathExpression, valueMatcher, namespaceContext);
 	}
 
+	// See comment in super class
+//	public <T> SourceHasXPath(String xPathExpression,
+//			Matcher<? super T> valueMatcher, NamespaceContext namespaceContext,
+//			XpathReturnType<? super T> xpathReturnType) {
 	public <T> SourceHasXPath(String xPathExpression,
-			Matcher<? super T> valueMatcher, NamespaceContext namespaceContext,
-			XpathReturnType<? super T> xpathReturnType) {
+			Matcher<?> valueMatcher, NamespaceContext namespaceContext,
+			XpathReturnType<?> xpathReturnType) {
 		super(xPathExpression, valueMatcher, namespaceContext, xpathReturnType);
 	}
 
