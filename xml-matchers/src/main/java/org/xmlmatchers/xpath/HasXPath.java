@@ -61,8 +61,12 @@ public abstract class HasXPath<T> extends TypeSafeMatcher<T> {
 		this(xPathExpression, valueMatcher, namespaceContext, returningAString());
 	}
 	
-	public <R> HasXPath(String xPathExpression, Matcher<? super R> valueMatcher,
-			NamespaceContext namespaceContext, XpathReturnType<? super R> xPathReturnType) {
+ // This works when using the Eclipse compiler but now with with Sun's.  Not sure why
+//	public <R> HasXPath(String xPathExpression, Matcher<? super R> valueMatcher,
+//			NamespaceContext namespaceContext, XpathReturnType<? super R> xPathReturnType) {
+	
+	public HasXPath(String xPathExpression, Matcher<?> valueMatcher,
+			NamespaceContext namespaceContext, XpathReturnType<?> xPathReturnType) {
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
 			if (namespaceContext != null) {
