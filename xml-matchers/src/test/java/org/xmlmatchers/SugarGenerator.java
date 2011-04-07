@@ -26,7 +26,7 @@ public class SugarGenerator {
 	public static void main(String[] args) throws Exception {
 //		XmlConfigurator.main(new String[0]); // display usage
 		XmlConfigurator.main(new String[] { //
-				"src/main/resources/sugar-generation.xml",//
+				"src/test/resources/sugar-generation.xml",//
 						"src/main/java/",//
 						"org.xmlmatchers.XmlMatchers",//
 						"src/main/java" });

@@ -18,7 +18,6 @@ package org.xmlmatchers.equivalence;
 import java.io.IOException;
 
 import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
@@ -26,7 +25,6 @@ import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.xmlmatchers.transform.IdentityTransformer;
 import org.xmlmatchers.transform.StringResult;
@@ -34,86 +32,52 @@ import org.xmlmatchers.transform.StringResult;
 /**
  * @author David Ehringer
  */
-public class IsEquivalentTo extends TypeSafeMatcher<String> {
-	
-	// TODO support other types besides String?
-	
-	private String xml;
+public class IsEquivalentTo extends TypeSafeMatcher<Source> {
+	// TODO change to extending TypeSafeDiagnosingMatcher
 
-	private IsEquivalentTo(StringResult xml) {
-		this.xml = xml.toString();
-	}
+	private final IdentityTransformer identity = new IdentityTransformer();
 
-	private IsEquivalentTo(String xml) {
-		this.xml = xml;
+	private String control;
+
+	private IsEquivalentTo(Source control) {
+		this.control = convertToString(control);
 	}
 
 	@Override
-	public boolean matchesSafely(String source) {
+	public boolean matchesSafely(Source source) {
+		String test = convertToString(source);
+		XMLUnit.setIgnoreAttributeOrder(true);
+		XMLUnit.setIgnoreComments(true);
+		XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
+		XMLUnit.setIgnoreWhitespace(true);
+		XMLUnit.setNormalize(true);
+		XMLUnit.setNormalizeWhitespace(true);
 		try {
-			XMLUnit.setIgnoreAttributeOrder(true);
-			XMLUnit.setIgnoreComments(true);
-			XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
-			XMLUnit.setIgnoreWhitespace(true);
-			XMLUnit.setNormalize(true);
-			XMLUnit.setNormalizeWhitespace(true);
-			return new Diff(source, xml).identical();
-		} catch (IOException e) {
-			return false;
+			return new Diff(control, test).identical();
 		} catch (SAXException e) {
+			return false;
+		} catch (IOException e) {
 			return false;
 		}
 	}
 
+	private String convertToString(Source source) {
+		StringResult result = new StringResult();
+		identity.transform(source, result);
+		return result.toString();
+	}
+
 	public void describeTo(Description description) {
-		description.appendText("an XML document equivalent to "
-				+ xml.toString());
+		description.appendText("an XML document equivalent to " + control);
 	}
 
 	@Factory
-	public static Matcher<String> isEquivalentTo(StringResult xml) {
-		return new IsEquivalentTo(xml);
+	public static Matcher<Source> isEquivalentTo(Source control) {
+		return new IsEquivalentTo(control);
 	}
 
 	@Factory
-	public static Matcher<String> isEquivalentTo(String xml) {
-		return new IsEquivalentTo(xml);
-	}
-
-	@Factory
-	public static Matcher<String> isEquivalentTo(Source xml) {
-		StringResult result = new StringResult();
-		IdentityTransformer transformer = new IdentityTransformer();
-		transformer.transform(xml, result);
-		return new IsEquivalentTo(result.toString());
-	}
-
-	@Factory
-	public static Matcher<String> isEquivalentTo(Node xml) {
-		DOMSource source = new DOMSource(xml);
-		StringResult result = new StringResult();
-		IdentityTransformer transformer = new IdentityTransformer();
-		transformer.transform(source, result);
-		return new IsEquivalentTo(result.toString());
-	}	
-
-	@Factory
-	public static Matcher<String> equivalentTo(StringResult xml) {
-		return isEquivalentTo(xml);
-	}
-
-	@Factory
-	public static Matcher<String> equivalentTo(String xml) {
-		return isEquivalentTo(xml);
-	}
-	
-	@Factory
-	public static Matcher<String> equivalentTo(Source xml) {
-		return isEquivalentTo(xml);
-	}
-
-	@Factory
-	public static Matcher<String> equivalentTo(Node xml) {
-		return isEquivalentTo(xml);
+	public static Matcher<Source> equivalentTo(Source control) {
+		return new IsEquivalentTo(control);
 	}
 }

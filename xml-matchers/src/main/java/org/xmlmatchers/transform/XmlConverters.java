@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 the original author or authors.
+ * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,32 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.xmlmatchers.validation;
+package org.xmlmatchers.transform;
 
+import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.validation.Schema;
 
-import org.hamcrest.Factory;
-import org.hamcrest.Matcher;
 import org.w3c.dom.Node;
 
 /**
  * @author David Ehringer
- * 
  */
-public class NodeConformsToSchema extends ConformsToSchema<Node> {
+public class XmlConverters {
 
-	public NodeConformsToSchema(Schema schema) {
-		super(schema);
+	private XmlConverters(){
+		
 	}
 
-	@Override
-	protected DOMSource convert(Node node) {
+	public static Source the(Source xml) {
+		return xml;
+	}
+	
+	public static Source the(String xml) {
+		return StringSource.toSource(xml);
+	}
+	
+	public static Source the(Node node) {
 		return new DOMSource(node);
 	}
-
-	@Factory
-	public static Matcher<Node> conformsTo(Schema schema) {
-		return new NodeConformsToSchema(schema);
+	
+	public static Source the(StringResult xml) {
+		return StringSource.toSource(xml.toString());
 	}
 }
