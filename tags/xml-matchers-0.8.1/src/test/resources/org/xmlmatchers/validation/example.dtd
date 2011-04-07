@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!ELEMENT person (name)>
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST name private (true|false|1|0) "false">
