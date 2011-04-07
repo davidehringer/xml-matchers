@@ -3,7 +3,7 @@
 
 = Introduction =
 
-Xml-matchers provides three categories of XML-based [http://code.google.com/p/hamcrest/ Hamcrest] matchers: XPath, Equivalence, Schema Compliance.  The matchers natively support common XML formats in Java such as [http://download.oracle.com/javase/6/docs/api/org/w3c/dom/Node.html org.w3c.dom.Node], [http://download.oracle.com/javase/6/docs/api/javax/xml/transform/Source.html javax.xml.transform.Source], [http://download.oracle.com/javase/6/docs/api/javax/xml/transform/Result.html javax.xml.transform.Result], [http://download.oracle.com/javase/6/docs/api/javax/xml/soap/SOAPElement.html SOAPElement], and basic Strings.
+Xml-matchers provides three categories of XML-based [http://code.google.com/p/hamcrest/ Hamcrest] matchers: XPath, Equivalence, Schema Compliance.  The matchers natively support common XML formats in Java such as [http://download.oracle.com/javase/6/docs/api/org/w3c/dom/Node.html org.w3c.dom.Node], [http://download.oracle.com/javase/6/docs/api/javax/xml/transform/Source.html javax.xml.transform.Source], [http://download.oracle.com/javase/6/docs/api/javax/xml/transform/Result.html javax.xml.transform.Result], [http://download.oracle.com/javase/6/docs/api/javax/xml/soap/SOAPElement.html javax.xml.soap.SOAPElement], and basic Strings.
 
 [http://code.google.com/p/hamcrest/ Hamcrest] version 1.2 is a required dependency.
 
@@ -25,22 +25,7 @@ The XPath matchers support:
 
 *XML Formats Supported*
 
-For any of the examples, the `xml` could be one of the following types.
-{{{
-import org.xmlmatchers.transform.StringResult
-
-...
-
-Source xml = ...
-// or
-StringResult xml = ...
-// or
-Node xml = ...
-// or
-SOAPElement xml = ...
-// or
-String xml = ...
-}}}
+See the [XmlConverters] page for sugar methods to convert all the types of XML listed above into a Source object, the native format for the matchers.
 
 *Basic Matching*
 {{{
