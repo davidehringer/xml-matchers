@@ -1,0 +1,14 @@
+#summary XML Converters
+
+= Converters =
+
+The [http://code.google.com/p/xml-matchers/source/browse/trunk/xml-matchers/src/main/java/org/xmlmatchers/transform/XmlConverters.java XmlConverters] class has a set of "`the`" methods that will convert XML in various formats into a Source, the standard format for the Matchers. For example:
+
+{{{
+import static org.xmlmatchers.transform.XmlConverters.the;
+
+...
+
+String xml = "<person private=\"true\"><name>Dave</name></person>";
+assertThat(the(xml), conformsTo(schema));
+}}}
