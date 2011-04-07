@@ -71,7 +71,7 @@ import static org.xmlmatchers.xpath.XpathReturnType.returningANumber;
 import static org.xmlmatchers.xpath.XpathReturnType.returningAnXmlNode;
 
 // and leveraging the Equivalence matchers
-import static org.xmlmatchers.equivalence.IsEquivalentTo.equivalentTo;
+import static org.xmlmatchers.XmlMatchers.equivalentTo;
 
 ...
 
@@ -111,7 +111,7 @@ assertThat(xml,//
 		equalTo(true)));
 }}}
 
-Take a look at [http://code.google.com/p/xml-matchers/source/browse/trunk/xml-matchers/src/test/java/org/xmlmatchers/xpath/SourceHasXPathTest.java some example tests for additional examples].
+Take a look at [http://code.google.com/p/xml-matchers/source/browse/trunk/xml-matchers/src/test/java/org/xmlmatchers/xpath/HasXPathTest.java some example tests for additional examples].
 
 = Equivalence =
 
@@ -133,8 +133,8 @@ A few example use cases follow.  They assume a few static imports.  The specific
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat; // or Hamcrest's version
-import static org.xmlmatchers.equivalence.IsEquivalentTo.equivalentTo;
-import static org.xmlmatchers.equivalence.IsEquivalentTo.isEquivalentTo;
+import static org.xmlmatchers.XmlMatchers.equivalentTo;
+import static org.xmlmatchers.XmlMatchers.isEquivalentTo;
 }}}
 
 *Whitespace*
@@ -155,7 +155,7 @@ assertThat(xml, isEquivalentTo(xmlWithComments));
 
 *W3C XML Schema*
 {{{
-import static org.xmlmatchers.validation.StringConformsToSchema.conformsTo;
+import static org.xmlmatchers.XmlMatchers.conformsTo;
 import static org.xmlmatchers.validation.SchemaFactory.w3cXmlSchemaFromClasspath;
 
 
