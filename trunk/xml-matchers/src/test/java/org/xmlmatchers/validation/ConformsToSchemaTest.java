@@ -17,7 +17,8 @@ package org.xmlmatchers.validation;
 
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
-import static org.xmlmatchers.validation.StringConformsToSchema.conformsTo;
+import static org.xmlmatchers.validation.ConformsToSchema.conformsTo;
+import static org.xmlmatchers.transform.XmlConverters.*;
 
 import javax.xml.validation.Schema;
 
@@ -26,36 +27,37 @@ import org.xml.sax.SAXException;
 
 /**
  * @author David Ehringer
- * 
  */
-public class StringConformsToSchemaTest extends AbstractConformsToSchemaTest{
+public class ConformsToSchemaTest extends AbstractConformsToSchemaTest{
 
-	public StringConformsToSchemaTest(Schema schema) {
+	public ConformsToSchemaTest(Schema schema) {
 		super(schema);
 	}
 
+	// TODO the subclass is no longer necessary.  Push up
+	
 	@Test
 	public void aValidXmlStringAdheresToTheSchema() throws SAXException {
 		String xml = "<person private=\"true\"><name>Dave</name></person>";
-		assertThat(xml, conformsTo(schema));
+		assertThat(the(xml), conformsTo(schema));
 	}
 
 	@Test
 	public void anInvalidAttributeDoesNotAdhereToTheSchema()
 			throws SAXException {
 		String xml = "<person private=\"2\"><name>Dave</name></person>";
-		assertThat(xml, not(conformsTo(schema)));
+		assertThat(the(xml), not(conformsTo(schema)));
 	}
 
 	@Test
 	public void anInvalidElementDoesNotAdhereToTheSchema() throws SAXException {
 		String xml = "<person private=\"1\"><age/></person>";
-		assertThat(xml, not(conformsTo(schema)));
+		assertThat(the(xml), not(conformsTo(schema)));
 	}
 
 	@Test(expected = Exception.class)
 	public void malformedXmlCausesAnExceptionToBeThrown() throws SAXException {
 		String xml = "<person private=\"1\">";
-		assertThat(xml, not(conformsTo(schema)));
+		assertThat(the(xml), not(conformsTo(schema)));
 	}
 }

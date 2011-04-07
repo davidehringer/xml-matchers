@@ -29,6 +29,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.hamcrest.Description;
+import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.w3c.dom.Node;
@@ -42,7 +43,8 @@ import org.xmlmatchers.transform.StringResult;
  * @param <T>
  *            The type to execute the XPath against
  */
-public abstract class HasXPath<T> extends TypeSafeMatcher<T> {
+public class HasXPath extends TypeSafeMatcher<Source> {
+	// TODO change to extending TypeSafeDiagnosingMatcher
 
 	private static final IdentityTransformer IDENTITY = new IdentityTransformer();
 
@@ -95,9 +97,9 @@ public abstract class HasXPath<T> extends TypeSafeMatcher<T> {
 	}
 
 	@Override
-	public boolean matchesSafely(T t) {
+	public boolean matchesSafely(Source source) {
 		try {
-			Node node = convert(t);
+			Node node = convert(source);
 			if (valueMatcher == null) {
 				return evaluateXPathForExistence(node);
 			}
@@ -112,15 +114,11 @@ public abstract class HasXPath<T> extends TypeSafeMatcher<T> {
 		}
 	}
 
-	private Node convert(T t) {
-		Source source = convertToSource(t);
+	private Node convert(Source source) {
 		DOMResult dom = new DOMResult();
 		IDENTITY.transform(source, dom);
 		return dom.getNode();
 	}
-
-	protected abstract Source convertToSource(T t)
-			throws IllegalArgumentException;
 
 	private boolean evaluateXPathForExistence(Node node)
 			throws TransformerException, XPathExpressionException {
@@ -140,5 +138,51 @@ public abstract class HasXPath<T> extends TypeSafeMatcher<T> {
 			return stringResult.toString();
 		}
 		return compiledXPath.evaluate(node, xPathReturnType.evaluationMode());
+	}
+	
+
+	@Factory
+	public static Matcher<Source> hasXPath(String xPath) {
+		return new HasXPath(xPath);
+	}
+
+	@Factory
+	public static Matcher<Source> hasXPath(String xPath,
+			NamespaceContext namespaceContext) {
+		return new HasXPath(xPath, null, namespaceContext);
+	}
+
+	@Factory
+	public static Matcher<Source> hasXPath(String xPath,
+			Matcher<? super String> valueMatcher) {
+		return new HasXPath(xPath, valueMatcher, null);
+	}
+
+	@Factory
+	public static Matcher<Source> hasXPath(String xPath,
+			NamespaceContext namespaceContext, Matcher<? super String> valueMatcher) {
+		return new HasXPath(xPath, valueMatcher, namespaceContext);
+	}
+
+	@Factory
+	public static <T> Matcher<Source> hasXPath(String xPath,
+			XpathReturnType<? super T> xpathReturnType,
+			Matcher<? super T> valueMatcher) {
+		return new HasXPath(xPath, valueMatcher, null, xpathReturnType);
+	}
+
+	@Factory
+	public static <T> Matcher<Source> hasXPath(String xPath,
+			NamespaceContext namespaceContext,
+			XpathReturnType<? super T> xpathReturnType,
+			Matcher<? super T> valueMatcher) {
+		return new HasXPath(xPath, valueMatcher, namespaceContext,
+				xpathReturnType);
+	}
+
+	@Factory
+	public static Matcher<Source> hasXPath(String xPath,
+			Matcher<? super String> valueMatcher, NamespaceContext namespaceContext) {
+		return new HasXPath(xPath, valueMatcher, namespaceContext);
 	}
 }

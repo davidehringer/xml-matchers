@@ -2,15 +2,7 @@
 <matchers>
 
   <factory class="org.xmlmatchers.equivalence.IsEquivalentTo"/>
-
-  <factory class="org.xmlmatchers.xpath.StringResultHasXPath"/>
-  <factory class="org.xmlmatchers.xpath.StringHasXPath"/>
-  <factory class="org.xmlmatchers.xpath.SourceHasXPath"/>
-  <factory class="org.xmlmatchers.xpath.NodeHasXPath"/>
-  
-  <factory class="org.xmlmatchers.validation.StringConformsToSchema"/>
-  <factory class="org.xmlmatchers.validation.StringResultConformsToSchema"/>
-  <factory class="org.xmlmatchers.validation.SourceConformsToSchema"/>
-  <factory class="org.xmlmatchers.validation.NodeConformsToSchema"/>
+  <factory class="org.xmlmatchers.xpath.HasXPath"/>
+  <factory class="org.xmlmatchers.validation.ConformsToSchema"/>
 
 </matchers>
