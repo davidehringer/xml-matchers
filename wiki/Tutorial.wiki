@@ -137,20 +137,21 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat; // or Hamcrest's version
 import static org.xmlmatchers.XmlMatchers.equivalentTo;
 import static org.xmlmatchers.XmlMatchers.isEquivalentTo;
+import static org.xmlmatchers.transform.XmlConverters.the;
 }}}
 
 *Whitespace*
 {{{
 String xml = "<mountains><mountain>K2</mountain></mountains>";
 String xmlWithSpaceWrappingText = "<mountains><mountain>\n\tK2\n\t </mountain></mountains>";
-assertThat(xml, isEquivalentTo(xmlWithSpaceWrappingText));
+assertThat(the(xml), isEquivalentTo(the(xmlWithSpaceWrappingText)));
 }}}
 
 *Comments*
 {{{
 String xml = "<mountains><mountain>K2</mountain></mountains>";
 String xmlWithComments = "<mountains><!-- 28,251 ft. --><mountain>K2</mountain></mountains>";
-assertThat(xml, isEquivalentTo(xmlWithComments));
+assertThat(the(xml), isEquivalentTo(the(xmlWithComments)));
 }}}
 
 = Schema Compliance =
@@ -164,7 +165,7 @@ import static org.xmlmatchers.validation.SchemaFactory.w3cXmlSchemaFromClasspath
 ...
 Schema schema = w3cXmlSchemaFromClasspath("org/xmlmatchers/validation/example.xsd");
 String xml = "<person private=\"true\"><name>Dave</name></person>";
-assertThat(xml, conformsTo(schema));
+assertThat(the(xml), conformsTo(schema));
 }}}
 
 *RelaxNG*
