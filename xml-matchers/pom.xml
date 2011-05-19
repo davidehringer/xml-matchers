@@ -9,11 +9,13 @@
 
 	<name>xml-matchers</name>
 	<url>http://code.google.com/p/xml-matchers/</url>
+	<description>A collection of Hamcrest matchers for XML documents. The matchers include XPath, schema validation using XML Schema or RelaxNG(experimental), and XML document equivalence.</description>
 
 	<inceptionYear>2010</inceptionYear>
 	<developers>
 		<developer>
 			<name>David Ehringer</name>
+			<organizationUrl>http://davidehringer.com</organizationUrl>
 		</developer>
 	</developers>
 	<licenses>
@@ -22,6 +24,12 @@
 			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 		</license>
 	</licenses>
+
+	<scm>
+		<connection>scm:svn:http://xml-matchers.googlecode.com/svn/trunk/</connection>
+		<developerConnection>scm:svn:https://xml-matchers.googlecode.com/svn/trunk/</developerConnection>
+		<url>http://code.google.com/p/xml-matchers/source/browse/</url>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
