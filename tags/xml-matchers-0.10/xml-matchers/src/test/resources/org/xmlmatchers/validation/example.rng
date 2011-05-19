@@ -1,9 +1,0 @@
-<element name="person" xmlns="http://relaxng.org/ns/structure/1.0" 
-datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
-    <element name="name">
-        <text/>
-    </element>
-    <attribute name="private">
-        <data type="boolean"/>
-    </attribute>
-</element>
