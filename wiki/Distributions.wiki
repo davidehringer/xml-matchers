@@ -16,4 +16,4 @@
 
 Download the latest version from from the [http://code.google.com/p/xml-matchers/downloads/list download page].  
 
-xml-matchers depends on [http://code.google.com/p/hamcrest/ Hamcrest] version 1.2 (hamcrest-core). If you are using the XML "equivalence" features, [http://xmlunit.sourceforge.net/ XML-Unit] version 1.3 is also required.
+xml-matchers depends on [http://code.google.com/p/hamcrest/ Hamcrest]  (hamcrest-core) version [http://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.2/hamcrest-core-1.2.jar 1.2]. If you are using the XML "equivalence" features, [http://xmlunit.sourceforge.net/ XML-Unit] version [http://repo1.maven.org/maven2/xmlunit/xmlunit/1.3/xmlunit-1.3.jar 1.3] is also required.
