@@ -1,7 +1,9 @@
-#summary One-sentence summary of this page.
+#summary xml-matcher Distributions
 #labels Featured
 
 = Maven =
+
+Add the following dependency to your POM.
 
 {{{
 <dependency>
@@ -10,7 +12,6 @@
   <version>0.10</version>
 </dependency>
 }}}
-
 
 = Non-Maven =
 
