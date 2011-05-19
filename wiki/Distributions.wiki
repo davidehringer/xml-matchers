@@ -13,7 +13,7 @@ Add the following dependency to your POM.
 </dependency>
 }}}
 
-[http://search.maven.org/#artifactdetails|org.xmlmatchers|xml-matchers|0.10|jar Version 0.10] is currently available in Maven central. See [http://search.maven.org/#browse|-1724894730 Maven Central Search] for all versions available in Maven Central.
+[http://search.maven.org/#artifactdetails|org.xmlmatchers|xml-matchers|0.10|jar Version 0.10] is currently available in Maven Central. See [http://search.maven.org/#browse|-1724894730 Maven Central Search] for all versions available in Maven Central.
 
 = Non-Maven =
 
