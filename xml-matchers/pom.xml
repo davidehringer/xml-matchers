@@ -30,8 +30,8 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:http://xml-matchers.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://xml-matchers.googlecode.com/svn/trunk/</developerConnection>
+		<connection>scm:svn:http://xml-matchers.googlecode.com/svn/trunk/xml-matchers</connection>
+		<developerConnection>scm:svn:https://xml-matchers.googlecode.com/svn/trunk/xml-matchers</developerConnection>
 		<url>http://code.google.com/p/xml-matchers/source/browse/</url>
 	</scm>
 
