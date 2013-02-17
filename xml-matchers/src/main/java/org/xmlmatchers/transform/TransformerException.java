@@ -16,8 +16,10 @@
 package org.xmlmatchers.transform;
 
 /**
+ * An exception resulting from issues while attempting to perform an XML
+ * transformation.
+ * 
  * @author David Ehringer
- *
  */
 @SuppressWarnings("serial")
 public class TransformerException extends RuntimeException {
