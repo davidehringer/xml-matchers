@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
 import org.xmlmatchers.transform.StringSource;
 
 /**
- * <em>This is still experimental</em>
+ * <em>Anything besides the W3C support is still experimental.</em>
  * 
  * @author David Ehringer
  */
