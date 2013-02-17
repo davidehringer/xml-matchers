@@ -23,12 +23,12 @@ import javax.xml.xpath.XPathConstants;
  */
 public abstract class XpathReturnType<T> {
 	
-	abstract QName evaluationMode();
+	protected abstract QName evaluationMode();
 
 	public static XpathReturnType<Double> returningANumber() {
 		return new XpathReturnType<Double>() {
 			@Override
-			QName evaluationMode() {
+			protected QName evaluationMode() {
 				return XPathConstants.NUMBER;
 			}};
 	}
@@ -36,7 +36,7 @@ public abstract class XpathReturnType<T> {
 	public static XpathReturnType<String> returningAnXmlNode() {
 		return new XpathReturnType<String>() {
 			@Override
-			QName evaluationMode() {
+			protected QName evaluationMode() {
 				return XPathConstants.NODE;
 			}};
 	}
@@ -44,14 +44,14 @@ public abstract class XpathReturnType<T> {
 	public static XpathReturnType<String> returningAString() {
 		return new XpathReturnType<String>() {
 			@Override
-			QName evaluationMode() {
+			protected QName evaluationMode() {
 				return XPathConstants.STRING;
 			}};
 	}
 	public static XpathReturnType<Boolean> returningABoolean() {
 		return new XpathReturnType<Boolean>() {
 			@Override
-			QName evaluationMode() {
+			protected QName evaluationMode() {
 				return XPathConstants.BOOLEAN;
 			}};
 	}
