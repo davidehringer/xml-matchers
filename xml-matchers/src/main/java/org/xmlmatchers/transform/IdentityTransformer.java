@@ -26,8 +26,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
 /**
- * @author David Ehringer
+ * A facility for tranforming XML from one representation to another without
+ * changing the actual XML. In other words, it performs and identity transform.
  * 
+ * @author David Ehringer
  */
 public class IdentityTransformer {
 
