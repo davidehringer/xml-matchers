@@ -21,6 +21,20 @@ import javax.xml.transform.dom.DOMSource;
 import org.w3c.dom.Node;
 
 /**
+ * Convenience methods for converting various forms of XML into {@link Source}
+ * objects, the representation used by the XML Matcher interfaces. The method
+ * names {code}the{code} and {code}xml{code} where chosen to provide a fluent
+ * feel when you chain the matchers together. Example usage:
+ * 
+ * {@code
+ * 		assertThat(
+				the(xml),
+				hasXPath("/mountains/mountain[@id='a']/name",
+						returningAnXmlNode(),
+						equivalentTo(xml("<name>Everest</name>"))));
+ * }
+ * 
+ * 
  * @author David Ehringer
  */
 public class XmlConverters {
@@ -52,5 +66,21 @@ public class XmlConverters {
 
 	public static Source the(StringResult xml) {
 		return StringSource.toSource(xml.toString());
+	}
+
+	public static Source xml(Source xml) {
+		return the(xml);
+	}
+
+	public static Source xml(String xml) {
+		return the(xml);
+	}
+
+	public static Source xml(Node node) {
+		return the(node);
+	}
+
+	public static Source xml(StringResult xml) {
+		return the(xml);
 	}
 }
