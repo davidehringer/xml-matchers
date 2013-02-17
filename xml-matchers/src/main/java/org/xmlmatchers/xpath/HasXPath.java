@@ -141,17 +141,17 @@ public class HasXPath extends TypeSafeMatcher<Source> {
 		return compiledXPath.evaluate(node, XPathConstants.NODE) == null ? false
 				: true;
 	}
-
+	
+	/**
+	 * @see {@link XpathReturnType#returningAnXmlNode()} about implementation details.
+	 */
 	private Object evaluateXPath(Node node) throws TransformerException,
 			XPathExpressionException {
 		if (XPathConstants.NODE == xPathReturnType.evaluationMode()) {
-			// We need a special case for XML results so that we actually get back the XML
+			// We need a special case for XML results so that we actually get back the XML in a format useful for chaining other matchers
 			Node result = (Node) compiledXPath.evaluate(node,
 					XPathConstants.NODE);
-			DOMSource domSource = new DOMSource(result);
-			StringResult stringResult = new StringResult();
-			IDENTITY.transform(domSource, stringResult);
-			return stringResult.toString();
+			return new DOMSource(result);
 		}
 		return compiledXPath.evaluate(node, xPathReturnType.evaluationMode());
 	}

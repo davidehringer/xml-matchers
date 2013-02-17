@@ -19,10 +19,22 @@ import javax.xml.namespace.QName;
 import javax.xml.xpath.XPathConstants;
 
 /**
+ * The type of value returned from an XPath expression. This value can be fed to
+ * additional matchers after being extracted from an XML document via an XPath
+ * query. For example:
+ * 
+ * {@code
+ * 		assertThat(xml, hasXPath("count(/mountains/mountain)", equalTo("2")));
+		assertThat(xml,//
+				hasXPath("count(/mountains/mountain)", //
+						returningANumber(), //
+						greaterThanOrEqualTo(2d)));
+ * }
+ * 
  * @author David Ehringer
  */
 public abstract class XpathReturnType<T> {
-	
+
 	protected abstract QName evaluationMode();
 
 	public static XpathReturnType<Double> returningANumber() {
@@ -30,15 +42,25 @@ public abstract class XpathReturnType<T> {
 			@Override
 			protected QName evaluationMode() {
 				return XPathConstants.NUMBER;
-			}};
+			}
+		};
 	}
 
+	/**
+	 * Warning: The return type passed to subsequent matchers will actually be a
+	 * Source rather than a Node. Returning a Node is not particularly useful
+	 * because it is nearly impossible to create any useful matchers for Node.
+	 * This is a slight inconsistency in naming but makes the result much more
+	 * usable.
+	 * 
+	 */
 	public static XpathReturnType<String> returningAnXmlNode() {
 		return new XpathReturnType<String>() {
 			@Override
 			protected QName evaluationMode() {
 				return XPathConstants.NODE;
-			}};
+			}
+		};
 	}
 
 	public static XpathReturnType<String> returningAString() {
@@ -46,13 +68,16 @@ public abstract class XpathReturnType<T> {
 			@Override
 			protected QName evaluationMode() {
 				return XPathConstants.STRING;
-			}};
+			}
+		};
 	}
+
 	public static XpathReturnType<Boolean> returningABoolean() {
 		return new XpathReturnType<Boolean>() {
 			@Override
 			protected QName evaluationMode() {
 				return XPathConstants.BOOLEAN;
-			}};
+			}
+		};
 	}
 }

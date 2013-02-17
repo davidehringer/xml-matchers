@@ -24,10 +24,12 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
-import static org.xmlmatchers.transform.XmlConverters.the;
+import static org.xmlmatchers.transform.XmlConverters.*;
 import static org.xmlmatchers.xpath.HasXPath.hasXPath;
 import static org.xmlmatchers.xpath.XpathReturnType.returningABoolean;
 import static org.xmlmatchers.xpath.XpathReturnType.returningANumber;
+import static org.xmlmatchers.xpath.XpathReturnType.returningAnXmlNode;
+import static org.xmlmatchers.equivalence.IsEquivalentTo.equivalentTo;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
@@ -36,7 +38,12 @@ import java.util.Collection;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -150,24 +157,23 @@ public class HasXPathTest {
 	}
 
 	@Test
-	@Ignore("Crap. Using a Source breaks this use case")
 	public void theResultOfTheXpathCanMatchedUsingEquivalentToWhenTheResultIsAnXmlFragment() {
-//		assertThat(
-//				xml,
-//				hasXPath("/mountains/mountain[@id='a']/name",
-//						returningAnXmlNode(),
-//						equivalentTo("<name>Everest</name>")));
+		assertThat(
+				xml,
+				hasXPath("/mountains/mountain[@id='a']/name",
+						returningAnXmlNode(),
+						equivalentTo(xml("<name>Everest</name>"))));
 	}
 
 	@Test
-	@Ignore("Crap. Using a Source breaks this use case")
-	public void matchingNodesCanBeTestedForEquivalence() {
-//		assertThat(
-//				xml,
-//				hasXPath(
-//						"/mountains/mountain[@id='a']/name",
-//						returningAnXmlNode(),
-//						equivalentTo("<name><!-- some comment -->Everest</name>")));
+	public void matchingNodesCanBeTestedForEquivalence() {		
+		assertThat(
+				xml,
+				hasXPath(
+						"/mountains/mountain[@id='a']/name",
+						returningAnXmlNode(),
+						equivalentTo(xml("<name><!-- some comment -->Everest</name>"))));
+
 	}
 
 	@Test
