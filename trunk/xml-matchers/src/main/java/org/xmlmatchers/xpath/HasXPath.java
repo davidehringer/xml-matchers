@@ -27,6 +27,9 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathFactoryConfigurationException;
+
+import net.sf.saxon.lib.NamespaceConstant;
 
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
@@ -49,8 +52,8 @@ public class HasXPath extends TypeSafeMatcher<Source> {
 	private static final IdentityTransformer IDENTITY = new IdentityTransformer();
 
 	private final String xPathString;
-	private final XPathExpression compiledXPath;	
-	private final XpathReturnType<?>  xPathReturnType;
+	private final XPathExpression compiledXPath;
+	private final XpathReturnType<?> xPathReturnType;
 
 	private final Matcher<?> valueMatcher;
 
@@ -62,15 +65,15 @@ public class HasXPath extends TypeSafeMatcher<Source> {
 			NamespaceContext namespaceContext) {
 		this(xPathExpression, valueMatcher, namespaceContext, returningAString());
 	}
-	
+
  // This works when using the Eclipse compiler but now with with Sun's.  Not sure why
 //	public <R> HasXPath(String xPathExpression, Matcher<? super R> valueMatcher,
 //			NamespaceContext namespaceContext, XpathReturnType<? super R> xPathReturnType) {
-	
+
 	public HasXPath(String xPathExpression, Matcher<?> valueMatcher,
 			NamespaceContext namespaceContext, XpathReturnType<?> xPathReturnType) {
 		try {
-			XPath xPath = XPathFactory.newInstance().newXPath();
+			XPath xPath = buildXPath();
 			if (namespaceContext != null) {
 				xPath.setNamespaceContext(namespaceContext);
 			}
@@ -85,6 +88,19 @@ public class HasXPath extends TypeSafeMatcher<Source> {
 			this.xPathReturnType = returningAString();
 		} else {
 			this.xPathReturnType = xPathReturnType;
+		}
+	}
+
+	private XPath buildXPath() {
+		System.setProperty("javax.xml.xpath.XPathFactory:"
+				+ NamespaceConstant.OBJECT_MODEL_SAXON,
+				"net.sf.saxon.xpath.XPathFactoryImpl");
+		try {
+			return XPathFactory.newInstance(NamespaceConstant.OBJECT_MODEL_SAXON).newXPath();
+		} catch (XPathFactoryConfigurationException e) {
+			throw new UnsupportedOperationException(
+					"Saxon is incorrectly configured or not available on the classpath",
+					e);
 		}
 	}
 
@@ -139,7 +155,6 @@ public class HasXPath extends TypeSafeMatcher<Source> {
 		}
 		return compiledXPath.evaluate(node, xPathReturnType.evaluationMode());
 	}
-	
 
 	@Factory
 	public static Matcher<Source> hasXPath(String xPath) {
