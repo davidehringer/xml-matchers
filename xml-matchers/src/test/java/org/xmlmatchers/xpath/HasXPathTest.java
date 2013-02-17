@@ -74,6 +74,7 @@ public class HasXPathTest {
 		this.xml = xml;
 	}
 
+	// Test multiple source representations of XML
 	@Parameters
 	public static Collection<Source[]> data() throws Exception {
 		return Arrays.asList(new Source[][] {//
