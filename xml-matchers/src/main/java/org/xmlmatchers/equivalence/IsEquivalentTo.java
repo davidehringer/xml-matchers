@@ -30,6 +30,19 @@ import org.xmlmatchers.transform.IdentityTransformer;
 import org.xmlmatchers.transform.StringResult;
 
 /**
+ * <p>
+ * Matchers for comparing XML for "equivalence" and "similarity." Two documents
+ * are considered to be "equivalent" if they contain the same elements in the
+ * same order. Also, namespace prefixes must be the same. Attribute order,
+ * comments, whitespace, CDATA vs. text usage is not considered.
+ * <p>
+ * </p>
+ * Two documents are considered to be "similar" if the the content of the nodes
+ * in the documents are the same, but minor differences exist e.g. sequencing of
+ * sibling elements, values of namespace prefixes, use of implied attribute
+ * values.
+ * </p>
+ * 
  * @author David Ehringer
  */
 public class IsEquivalentTo extends TypeSafeMatcher<Source> {
@@ -37,10 +50,16 @@ public class IsEquivalentTo extends TypeSafeMatcher<Source> {
 
 	private final IdentityTransformer identity = new IdentityTransformer();
 
-	private String control;
+	private final String control;
+	private final boolean onlySimilar;
 
 	private IsEquivalentTo(Source control) {
+		this(control, false);
+	}
+
+	private IsEquivalentTo(Source control, boolean onlySimilar) {
 		this.control = convertToString(control);
+		this.onlySimilar = onlySimilar;
 	}
 
 	@Override
@@ -53,6 +72,9 @@ public class IsEquivalentTo extends TypeSafeMatcher<Source> {
 		XMLUnit.setNormalize(true);
 		XMLUnit.setNormalizeWhitespace(true);
 		try {
+			if (onlySimilar) {
+				return new Diff(control, test).similar();
+			}
 			return new Diff(control, test).identical();
 		} catch (SAXException e) {
 			return false;
@@ -79,5 +101,15 @@ public class IsEquivalentTo extends TypeSafeMatcher<Source> {
 	@Factory
 	public static Matcher<Source> equivalentTo(Source control) {
 		return new IsEquivalentTo(control);
+	}
+
+	@Factory
+	public static Matcher<Source> isSimilarTo(Source control) {
+		return new IsEquivalentTo(control, true);
+	}
+
+	@Factory
+	public static Matcher<Source> similarTo(Source control) {
+		return new IsEquivalentTo(control, true);
 	}
 }

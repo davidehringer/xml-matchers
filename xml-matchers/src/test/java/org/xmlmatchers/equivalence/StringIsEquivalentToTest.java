@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.xmlmatchers.equivalence.IsEquivalentTo.equivalentTo;
 import static org.xmlmatchers.equivalence.IsEquivalentTo.isEquivalentTo;
+import static org.xmlmatchers.equivalence.IsEquivalentTo.isSimilarTo;
 import static org.xmlmatchers.transform.XmlConverters.*;
 
 import java.io.ByteArrayInputStream;
@@ -131,4 +132,36 @@ public class StringIsEquivalentToTest {
 		String xmlWithCdata = "<mountains><mountain><![CDATA[K2\t]]></mountain></mountains>";
 		assertThat(the(xml), isEquivalentTo(the(xmlWithCdata)));
 	}
+	
+    @Test
+    // http://code.google.com/p/xml-matchers/issues/detail?id=7 submitted by headcrashing
+    public final void shallIgnoreOrder() {
+        final String expXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><D:multistatus xmlns:D=\"DAV:\"><D:response><D:href>%s</D:href><D:propstat><D:prop><D:displayname>Teams</D:displayname></D:prop><D:status>HTTP/1.1 200 OK</D:status></D:propstat></D:response><D:response><D:href>http://localhost:9998/quipsy/teams/123</D:href><D:propstat><D:prop><D:displayname/><D:getcontenttype>application/quipsy-team+xml</D:getcontenttype></D:prop><D:status>HTTP/1.1 200 OK</D:status></D:propstat></D:response></D:multistatus>";
+        final String actXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><D:multistatus xmlns:D=\"DAV:\"><D:response><D:href>%s</D:href><D:propstat><D:prop><D:displayname>Teams</D:displayname></D:prop><D:status>HTTP/1.1 200 OK</D:status></D:propstat></D:response><D:response><D:href>http://localhost:9998/quipsy/teams/123</D:href><D:propstat><D:prop><D:getcontenttype>application/quipsy-team+xml</D:getcontenttype><D:displayname/></D:prop><D:status>HTTP/1.1 200 OK</D:status></D:propstat></D:response></D:multistatus>";
+        assertThat(the(actXml), isSimilarTo(the(expXml)));
+    }
+
+    @Test
+ // http://code.google.com/p/xml-matchers/issues/detail?id=7 submitted by headcrashing
+    public final void shallIgnoreCaseOfPrefix() {
+        final String expXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><D:multistatus xmlns:D=\"DAV:\"><D:response><D:href>%s</D:href><D:propstat><D:prop><D:displayname>Teams</D:displayname></D:prop><D:status>HTTP/1.1 200 OK</D:status></D:propstat></D:response><D:response><D:href>http://localhost:9998/quipsy/teams/123</D:href><D:propstat><D:prop><D:displayname/><D:getcontenttype>application/quipsy-team+xml</D:getcontenttype></D:prop><D:status>HTTP/1.1 200 OK</D:status></D:propstat></D:response></D:multistatus>";
+        final String actXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><d:multistatus xmlns:d=\"DAV:\"><d:response><d:href>%s</d:href><d:propstat><d:prop><d:displayname>Teams</d:displayname></d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response><d:response><d:href>http://localhost:9998/quipsy/teams/123</d:href><d:propstat><d:prop><d:displayname/><d:getcontenttype>application/quipsy-team+xml</d:getcontenttype></d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response></d:multistatus>";
+        assertThat(the(actXml), isSimilarTo(the(expXml)));
+    }
+    
+    @Test
+ // http://code.google.com/p/xml-matchers/issues/detail?id=7 submitted by headcrashing
+    public final void shallIgnoreNameOfPrefix() {
+        final String expXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><D:multistatus xmlns:D=\"DAV:\"><D:response><D:href>%s</D:href><D:propstat><D:prop><D:displayname>Teams</D:displayname></D:prop><D:status>HTTP/1.1 200 OK</D:status></D:propstat></D:response><D:response><D:href>http://localhost:9998/quipsy/teams/123</D:href><D:propstat><D:prop><D:displayname/><D:getcontenttype>application/quipsy-team+xml</D:getcontenttype></D:prop><D:status>HTTP/1.1 200 OK</D:status></D:propstat></D:response></D:multistatus>";
+        final String actXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><P:multistatus xmlns:P=\"DAV:\"><P:response><P:href>%s</P:href><P:propstat><P:prop><P:displayname>Teams</P:displayname></P:prop><P:status>HTTP/1.1 200 OK</P:status></P:propstat></P:response><P:response><P:href>http://localhost:9998/quipsy/teams/123</P:href><P:propstat><P:prop><P:displayname/><P:getcontenttype>application/quipsy-team+xml</P:getcontenttype></P:prop><P:status>HTTP/1.1 200 OK</P:status></P:propstat></P:response></P:multistatus>";
+        assertThat(the(actXml), isSimilarTo(the(expXml)));
+    }
+
+    @Test
+ // http://code.google.com/p/xml-matchers/issues/detail?id=7 submitted by headcrashing
+    public final void shallIgnoreDefaultPrefix() {
+        final String expXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><D:multistatus xmlns:D=\"DAV:\"><D:response><D:href>%s</D:href><D:propstat><D:prop><D:displayname>Teams</D:displayname></D:prop><D:status>HTTP/1.1 200 OK</D:status></D:propstat></D:response><D:response><D:href>http://localhost:9998/quipsy/teams/123</D:href><D:propstat><D:prop><D:displayname/><D:getcontenttype>application/quipsy-team+xml</D:getcontenttype></D:prop><D:status>HTTP/1.1 200 OK</D:status></D:propstat></D:response></D:multistatus>";
+        final String actXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><multistatus xmlns=\"DAV:\"><response><href>%s</href><propstat><prop><displayname>Teams</displayname></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>http://localhost:9998/quipsy/teams/123</href><propstat><prop><displayname/><getcontenttype>application/quipsy-team+xml</getcontenttype></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>";
+        assertThat(the(actXml), isSimilarTo(the(expXml)));
+    }
 }
