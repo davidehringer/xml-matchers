@@ -36,12 +36,12 @@ import org.xml.sax.SAXParseException;
 import org.xmlmatchers.transform.IdentityTransformer;
 
 /**
- * possible names: adheres, complies, conforms
+ * A {@link Matcher} that verifies that an XML document conforms to a given
+ * schema.
  * 
  * @author David Ehringer
  */
-public class ConformsToSchema extends
-		TypeSafeDiagnosingMatcher<Source> {
+public class ConformsToSchema extends TypeSafeDiagnosingMatcher<Source> {
 
 	private Schema schema;
 
@@ -54,7 +54,8 @@ public class ConformsToSchema extends
 	}
 
 	@Override
-	protected boolean matchesSafely(Source source, Description mismatchDescription) {
+	protected boolean matchesSafely(Source source,
+			Description mismatchDescription) {
 		boolean isValid = true;
 		DOMSource domSource = convert(source);
 		Validator validator = schema.newValidator();
@@ -74,11 +75,11 @@ public class ConformsToSchema extends
 		return isValid;
 	}
 
-	protected DOMSource convert(Source source){
+	protected DOMSource convert(Source source) {
 		IdentityTransformer identity = new IdentityTransformer();
 		DOMResult result = new DOMResult();
 		identity.transform(source, result);
-		return new DOMSource(result.getNode()); 
+		return new DOMSource(result.getNode());
 	}
 
 	private static class ValidationErrorHandler implements ErrorHandler {
@@ -128,7 +129,7 @@ public class ConformsToSchema extends
 			mismatchDescription.appendText("]");
 		}
 	}
-	
+
 	@Factory
 	public static Matcher<Source> conformsTo(Schema schema) {
 		return new ConformsToSchema(schema);
