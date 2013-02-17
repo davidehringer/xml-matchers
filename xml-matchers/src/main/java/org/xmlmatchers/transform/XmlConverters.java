@@ -25,22 +25,31 @@ import org.w3c.dom.Node;
  */
 public class XmlConverters {
 
-	private XmlConverters(){
-		
+	private XmlConverters() {
+
 	}
 
 	public static Source the(Source xml) {
 		return xml;
 	}
-	
+
 	public static Source the(String xml) {
 		return StringSource.toSource(xml);
 	}
-	
-	public static Source the(Node node) {
-		return new DOMSource(node);
+
+	public static Source the(final Node node) {
+		return new DOMSource(node) {
+			@Override
+			public String toString() {
+				IdentityTransformer transformer = new IdentityTransformer();
+				DOMSource source = new DOMSource(node);
+				StringResult result = new StringResult();
+				transformer.transform(source, result);
+				return result.toString();
+			}
+		};
 	}
-	
+
 	public static Source the(StringResult xml) {
 		return StringSource.toSource(xml.toString());
 	}

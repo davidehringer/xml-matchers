@@ -16,7 +16,9 @@
 package org.xmlmatchers.transform;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.xmlmatchers.transform.XmlConverters.the;
+import static org.xmlmatchers.XmlMatchers.*;
 
 import java.io.ByteArrayInputStream;
 
@@ -52,6 +54,17 @@ public class XmlConvertersTest {
 				.getDocumentElement();
 
 		assertNotNull(the(element));
+	}
+	
+	@Test
+	public void theConvertsANodeToASourceHasAFriendlyToString() throws Exception {
+		Element element = DocumentBuilderFactory.newInstance()
+				.newDocumentBuilder()
+				.parse(new ByteArrayInputStream(xml.getBytes()))
+				.getDocumentElement();
+
+		Source source = the(element);
+		assertThat(the(source.toString()), isEquivalentTo(the(xml)));
 	}
 	
 	@Test
