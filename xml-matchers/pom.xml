@@ -8,7 +8,7 @@
 
 	<groupId>org.xmlmatchers</groupId>
 	<artifactId>xml-matchers</artifactId>
-	<version>1.0-RC1</version>
+	<version>1.0-RC2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>xml-matchers</name>
@@ -30,9 +30,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:http://xml-matchers.googlecode.com/svn/tags/xml-matchers-1.0-RC1</connection>
-		<developerConnection>scm:svn:https://xml-matchers.googlecode.com/svn/tags/xml-matchers-1.0-RC1</developerConnection>
-		<url>http://code.google.com/p/xml-matchers/source/browse/tags/xml-matchers-1.0-RC1</url>
+		<connection>scm:svn:http://xml-matchers.googlecode.com/svn/trunk/xml-matchers</connection>
+		<developerConnection>scm:svn:https://xml-matchers.googlecode.com/svn/trunk/xml-matchers</developerConnection>
+		<url>http://code.google.com/p/xml-matchers/source/browse/</url>
 	</scm>
 
 	<properties>
