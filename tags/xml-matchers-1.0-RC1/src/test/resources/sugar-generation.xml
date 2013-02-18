@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<matchers>
+
+  <factory class="org.xmlmatchers.equivalence.IsEquivalentTo"/>
+  <factory class="org.xmlmatchers.xpath.HasXPath"/>
+  <factory class="org.xmlmatchers.validation.ConformsToSchema"/>
+
+</matchers>
