@@ -25,7 +25,7 @@ assertThat(the(xml), conformsTo(schema));
 ```
 ## Documentation
 * [Tutorial](docs/Tutorial.md)
-* [XML Converters](XmlConverters.md)
-* [Release Notes](ReleaseNotes.md)
-* [Distributions](Distributions.md)
-* [Design Considerations](DesignConsiderations.md)
+* [XML Converters](docs/XmlConverters.md)
+* [Release Notes](docs/ReleaseNotes.md)
+* [Distributions](docs/Distributions.md)
+* [Design Considerations](docs/DesignConsiderations.md)
