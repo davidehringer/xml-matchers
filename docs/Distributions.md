@@ -14,6 +14,6 @@ Versions [1.0-RC1](http://search.maven.org/#artifactdetails|org.xmlmatchers|xml-
 
 # Non-Maven #
 
-Download the latest version from from the [download page](../releases).
+Download the latest version from from the [download page](https://github.com/davidehringer/xml-matchers/releases).
 
 xml-matchers depends on [Hamcrest](http://hamcrest.org/)  (hamcrest-core) version [1.3](http://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar). If you are using the XML "equivalence" features, [XML-Unit](http://xmlunit.sourceforge.net/) version [1.3](http://repo1.maven.org/maven2/xmlunit/xmlunit/1.3/xmlunit-1.3.jar) is also required.
