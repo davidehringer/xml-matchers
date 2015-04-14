@@ -1,5 +1,5 @@
 # xml-matchers
-A collection of Hamcrest matchers for XML documents. The matchers include XPath 1.0 and 2.0, schema validation using XML Schema or RelaxNG(experimental), and XML document equivalence. Check out the Tutorial page for a quick overview.
+A collection of Hamcrest matchers for XML documents. The matchers include XPath 1.0 and 2.0, schema validation using XML Schema or RelaxNG(experimental), and XML document equivalence. Check out the [Tutorial](4ef281aeaa09032019b3525c70e1e7a9f1443ab4) page for a quick overview.
 
 XML Matchers allow you to do things like the following.
 ```java
