@@ -18,6 +18,7 @@ package org.xmlmatchers.transform;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.xmlmatchers.transform.XmlConverters.the;
+import static org.xmlmatchers.xpath.XpathReturnType.returningAnXmlNode;
 import static org.xmlmatchers.XmlMatchers.*;
 
 import java.io.ByteArrayInputStream;
@@ -76,4 +77,11 @@ public class XmlConvertersTest {
 
 		assertNotNull(the(result));
 	}
+	
+	@Test
+    public void thatXmlCanBeCreatedFromNonUTF8() throws Exception {
+        String xml = new String("<?xml version=\"1.0\"?><this><is><xml>t\u00E9st</xml></is></this>".getBytes("ISO-8859-1"), "ISO-8859-1");
+        assertThat(the(xml, "ISO-8859-1"), hasXPath("/this/is/xml", returningAnXmlNode(), isEquivalentTo(the("<xml>tést</xml>"))));
+    }
+    
 }
