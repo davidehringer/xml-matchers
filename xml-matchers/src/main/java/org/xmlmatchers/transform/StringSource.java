@@ -16,6 +16,8 @@
 package org.xmlmatchers.transform;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,6 +25,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 /**
  * A convenience class for creating {@link Source} objects from a String. 
@@ -34,7 +37,7 @@ public class StringSource extends DOMSource {
 	
 	private final String xml;
 	
-	private StringSource(String xml) throws RuntimeException {
+	private StringSource(String xml, Charset charset) throws RuntimeException {
 		this.xml = xml;
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
@@ -42,8 +45,10 @@ public class StringSource extends DOMSource {
 			documentBuilderFactory.setNamespaceAware(true);
 			DocumentBuilder documentBuilder = documentBuilderFactory
 					.newDocumentBuilder();
-			Document dom = documentBuilder.parse(new ByteArrayInputStream(xml
-					.getBytes()));
+			InputStreamReader reader = new InputStreamReader(new ByteArrayInputStream(xml.getBytes(charset)), charset);
+            InputSource inputSource = new InputSource(reader);
+            inputSource.setEncoding(charset.name());
+            Document dom = documentBuilder.parse(inputSource);
 			setNode(dom);
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
@@ -51,7 +56,11 @@ public class StringSource extends DOMSource {
 	}
 
 	public static DOMSource toSource(String xml) throws RuntimeException {
-		return new StringSource(xml);
+		return new StringSource(xml, Charset.defaultCharset());
+	}
+
+	public static DOMSource toSource(String xml, String charsetName) throws RuntimeException {
+		return new StringSource(xml, Charset.forName(charsetName));
 	}
 
 	@Override

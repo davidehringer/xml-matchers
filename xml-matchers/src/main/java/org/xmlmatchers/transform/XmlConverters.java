@@ -51,6 +51,10 @@ public class XmlConverters {
 		return StringSource.toSource(xml);
 	}
 
+	public static Source the(String xml, String charsetName) {
+		return StringSource.toSource(xml, charsetName);
+	}
+
 	public static Source the(final Node node) {
 		return new DOMSource(node) {
 			@Override
